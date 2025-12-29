@@ -15,6 +15,8 @@ import { addCustomer } from '../features/customers/customersSlice';
 import { updateFileStatus } from '../features/upload/uploadSlice';
 import { addNotification } from '../features/ui/uiSlice';
 import { NOTIFICATION_TYPES } from '../utils/constants';
+import { parseDate } from '../utils/dateHelpers';
+import { validateExtractionResponse, sanitizeExtractionResponse, getUserFriendlyError } from '../utils/validationHelpers';
 
 /**
  * Process uploaded file through complete extraction pipeline
@@ -56,7 +58,29 @@ export const processFile = async (file, fileId, dispatch) => {
         dispatch(updateFileStatus({ id: fileId, progress: 60 }));
 
         // Step 2: Send to Groq AI for structured extraction
-        const extracted = await extractInvoiceData(rawText);
+        let extracted = await extractInvoiceData(rawText);
+
+        // Step 2.5: Validate and sanitize AI response
+        const validation = validateExtractionResponse(extracted);
+        if (!validation.valid) {
+            console.warn('AI response validation warnings:', validation.errors);
+            // Sanitize the response to fix common issues
+            extracted = sanitizeExtractionResponse(extracted);
+        }
+
+        // Normalize dates
+        if (extracted.invoice && extracted.invoice.date) {
+            const parsedDate = parseDate(extracted.invoice.date);
+            if (parsedDate) {
+                extracted.invoice.date = parsedDate;
+            } else {
+                console.warn('Failed to parse date:', extracted.invoice.date);
+                extracted.invoice.date = null;
+                if (!extracted.missingFields.includes('date')) {
+                    extracted.missingFields.push('date');
+                }
+            }
+        }
 
         dispatch(updateFileStatus({ id: fileId, progress: 80 }));
 
@@ -78,15 +102,17 @@ export const processFile = async (file, fileId, dispatch) => {
     } catch (error) {
         console.error('File processing error:', error);
 
+        const userMessage = getUserFriendlyError(error);
+
         dispatch(updateFileStatus({
             id: fileId,
             status: 'error',
-            error: error.message
+            error: userMessage
         }));
 
         dispatch(addNotification({
             type: NOTIFICATION_TYPES.ERROR,
-            message: `Failed to process ${file.name}: ${error.message}`
+            message: `Failed to process ${file.name}: ${userMessage}`
         }));
     }
 };

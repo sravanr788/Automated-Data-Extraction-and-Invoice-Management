@@ -9,7 +9,7 @@ import { CONFIG } from '../../utils/constants';
  * Initialize Groq client
  */
 const groq = new Groq({
-    apiKey: import.meta.env.VITE_GROQ_API_KEY,
+    apiKey: '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',
     dangerouslyAllowBrowser: true
 });
 
@@ -27,13 +27,25 @@ export const extractInvoiceData = async (rawText) => {
         ? rawText.substring(0, MAX_TEXT_LENGTH) + '\n\n[... text truncated due to length ...]'
         : rawText;
 
-    const prompt = `You are an AI system that extracts structured invoice data.
+    const prompt = `You are an AI system that extracts structured invoice data from raw text.
 
-Input:
-Unstructured text extracted from invoices (OCR or Excel).
+**CRITICAL RULES - READ CAREFULLY:**
 
-Your task:
-Return ONLY valid JSON in the following format:
+1. **Numbers Only**: ALL numeric fields (totalAmount, tax, quantity, unitPrice, priceWithTax, totalPurchaseAmount) MUST be final calculated numbers. NEVER use mathematical expressions like "11486.11 + 11486.11 + 3139.33". Calculate the sum and return the final number.
+
+2. **Date Formatting**: Parse dates to YYYY-MM-DD format. Examples:
+   - "12 Nov 2024" → "2024-11-12"
+   - "November 12, 2024" → "2024-11-12"
+   - "12/11/2024" → "2024-11-12"
+
+3. **Required Fields**: These fields are REQUIRED for each entity:
+   - Invoice: serialNumber, date, customerName, totalAmount, tax
+   - Product: name, quantity, unitPrice, tax, priceWithTax
+   - Customer: name, phone, totalPurchaseAmount
+
+4. **Missing Values**: If a field is not found in the text, set it to null and add the field name to the missingFields array.
+
+**Output Format (Valid JSON ONLY):**
 
 {
   "invoice": {
@@ -60,14 +72,21 @@ Return ONLY valid JSON in the following format:
   "missingFields": string[]
 }
 
-Rules:
-- Do NOT guess or hallucinate values
-- If a field is missing, return null
-- Add missing field names to missingFields
-- Output JSON only (no markdown, no explanation)
+**Examples:**
 
-Invoice Text:
-${truncatedText}`;
+WRONG: "tax": 11486.11 + 11486.11 + 3139.33
+RIGHT: "tax": 26111.55
+
+WRONG: "date": "12 Nov 2024"
+RIGHT: "date": "2024-11-12"
+
+WRONG: "quantity": "5 units"
+RIGHT: "quantity": 5
+
+**Invoice Text:**
+${truncatedText}
+
+**Remember**: Return ONLY valid JSON. No markdown code blocks, no explanations, no comments. All numbers must be calculated final values, not expressions.`;
 
     try {
         const response = await groq.chat.completions.create({

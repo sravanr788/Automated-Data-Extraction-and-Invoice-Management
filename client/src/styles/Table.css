@@ -50,7 +50,7 @@
 .data-table td.missing {
     background: var(--warning-bg);
     position: relative;
-    animation: pulse-missing 2.5s ease-in-out infinite;
+    animation: pulse-missing 2s ease-in-out infinite;
 }
 
 .data-table td.missing::before {
@@ -59,8 +59,19 @@
     left: 0;
     top: 0;
     bottom: 0;
-    width: 3px;
+    width: 4px;
     background: var(--warning);
+    animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+    from {
+        transform: scaleY(0);
+    }
+
+    to {
+        transform: scaleY(1);
+    }
 }
 
 @keyframes pulse-missing {
@@ -68,11 +79,42 @@
     0%,
     100% {
         opacity: 1;
+        background: var(--warning-bg);
     }
 
     50% {
-        opacity: 0.85;
+        opacity: 0.9;
+        background: rgba(251, 191, 36, 0.15);
     }
+}
+
+/* Product info cells */
+.product-info {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.product-name {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.more-badge {
+    display: inline-block;
+    background: var(--primary-subtle);
+    color: var(--primary);
+    font-size: 0.75rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all var(--transition-base);
+}
+
+.more-badge:hover {
+    background: var(--primary);
+    color: white;
+    transform: scale(1.05);
 }
 
 /* Inline input styling */

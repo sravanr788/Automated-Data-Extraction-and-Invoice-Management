@@ -14,6 +14,7 @@ import FileList from '../components/features/upload/FileList';
 import InvoiceTable from '../components/features/invoices/InvoiceTable';
 import ProductTable from '../components/features/products/ProductTable';
 import CustomerTable from '../components/features/customers/CustomerTable';
+import ThemeToggle from '../components/common/ThemeToggle';
 import './Dashboard.css';
 
 export default function Dashboard() {
@@ -35,10 +36,7 @@ export default function Dashboard() {
 
     return (
         <div className="app-container">
-            <header className="app-header">
-                <h1>Invoice Management System</h1>
-                <p>AI-powered data extraction from invoices, PDFs, Excel, and images</p>
-            </header>
+            <ThemeToggle />
 
             <main className="main-content">
                 <FileUpload />

@@ -68,6 +68,66 @@
   --transition-slow: 300ms ease;
 }
 
+/* Dark Mode */
+[data-theme="dark"] {
+  /* Primary Colors - Lighter for contrast */
+  --primary: #818cf8;
+  /* Indigo 400 */
+  --primary-dark: #6366f1;
+  /* Indigo 500 */
+  --primary-light: #a5b4fc;
+  /* Indigo 300 */
+  --primary-subtle: #312e81;
+  /* Indigo 900 */
+
+  /* Neutrals - Dark backgrounds */
+  --bg-main: #0f172a;
+  /* Slate 900 */
+  --bg-card: #1e293b;
+  /* Slate 800 */
+  --bg-hover: #334155;
+  /* Slate 700 */
+  --bg-input: #1e293b;
+  /* Slate 800 */
+
+  /* Text Colors - Light on dark */
+  --text-primary: #f1f5f9;
+  /* Slate 100 */
+  --text-secondary: #cbd5e1;
+  /* Slate 300 */
+  --text-tertiary: #64748b;
+  /* Slate 500 */
+
+  /* Status Colors */
+  --success: #10b981;
+  /* Emerald 500 */
+  --success-bg: #064e3b;
+  /* Emerald 900 */
+  --error: #ef4444;
+  /* Red 500 */
+  --error-bg: #7f1d1d;
+  /* Red 900 */
+  --warning: #f59e0b;
+  /* Amber 500 */
+  --warning-bg: #78350f;
+  /* Amber 900 */
+  --info: #3b82f6;
+  /* Blue 500 */
+  --info-bg: #1e3a8a;
+  /* Blue 900 */
+
+  /* Borders */
+  --border: #334155;
+  /* Slate 700 */
+  --border-strong: #475569;
+  /* Slate 600 */
+
+  /* Shadows - Subtle in dark mode */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
