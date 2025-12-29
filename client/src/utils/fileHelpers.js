@@ -11,7 +11,8 @@ export const ALLOWED_FILE_TYPES = {
     JPEG: 'image/jpeg',
     JPG: 'image/jpg',
     EXCEL: 'application/vnd.ms-excel',
-    EXCEL_MODERN: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    EXCEL_MODERN: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    CSV: 'text/csv'
 };
 
 /**
@@ -30,7 +31,7 @@ export const validateFile = (file) => {
     if (!allowedTypes.includes(file.type)) {
         return {
             valid: false,
-            error: 'Invalid file type. Please upload PDF, Excel, or Image files.'
+            error: 'Invalid file type. Please upload PDF, Excel, CSV, or Image files.'
         };
     }
 
@@ -52,7 +53,7 @@ export const validateFile = (file) => {
 export const detectFileType = (mimeType) => {
     if (mimeType === ALLOWED_FILE_TYPES.PDF) return 'pdf';
     if (mimeType.startsWith('image/')) return 'image';
-    if (mimeType.includes('sheet') || mimeType.includes('excel')) return 'excel';
+    if (mimeType.includes('sheet') || mimeType.includes('excel') || mimeType === ALLOWED_FILE_TYPES.CSV) return 'excel';
     return 'unknown';
 };
 

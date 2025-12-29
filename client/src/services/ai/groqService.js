@@ -20,6 +20,13 @@ const groq = new Groq({
  * @returns {Promise<import('../../models/dataModels').GroqExtractionResponse>}
  */
 export const extractInvoiceData = async (rawText) => {
+    // Truncate text if too long to prevent token limit errors
+    // Groq models typically support ~8k tokens, leaving room for prompt + response
+    const MAX_TEXT_LENGTH = 6000;
+    const truncatedText = rawText.length > MAX_TEXT_LENGTH
+        ? rawText.substring(0, MAX_TEXT_LENGTH) + '\n\n[... text truncated due to length ...]'
+        : rawText;
+
     const prompt = `You are an AI system that extracts structured invoice data.
 
 Input:
@@ -60,7 +67,7 @@ Rules:
 - Output JSON only (no markdown, no explanation)
 
 Invoice Text:
-${rawText}`;
+${truncatedText}`;
 
     try {
         const response = await groq.chat.completions.create({
@@ -86,7 +93,12 @@ ${rawText}`;
             throw new Error('Invalid Groq API key. Please check your .env file.');
         }
 
-        throw new Error(`AI extraction failed: ${error.message}`);
+        // Provide more helpful error messages
+        if (error.status === 400 && error.message.includes('length')) {
+            throw new Error('Document too long for AI processing. Please try a shorter document.');
+        }
+
+        throw new Error(`AI extraction failed: ${error.status || ''} ${error.message}`);
     }
 };
 

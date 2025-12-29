@@ -82,12 +82,12 @@ export default function FileUpload() {
 
             <h3>Upload Invoice Files</h3>
             <p>Drag and drop files here or click to browse</p>
-            <p className="file-types">PDF, Excel, or Image files (max 10MB)</p>
+            <p className="file-types">PDF, Excel, CSV, or Image files (max 10MB)</p>
 
             <input
                 type="file"
                 multiple
-                accept=".pdf,.xlsx,.xls,.png,.jpg,.jpeg"
+                accept=".pdf,.xlsx,.xls,.csv,.png,.jpg,.jpeg"
                 onChange={handleFileInput}
                 className="file-input"
             />

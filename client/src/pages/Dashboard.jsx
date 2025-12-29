@@ -36,7 +36,7 @@ export default function Dashboard() {
     return (
         <div className="app-container">
             <header className="app-header">
-                <h1>📄 Invoice Management System</h1>
+                <h1>Invoice Management System</h1>
                 <p>AI-powered data extraction from invoices, PDFs, Excel, and images</p>
             </header>
 

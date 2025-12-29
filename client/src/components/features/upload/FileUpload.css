@@ -1,24 +1,27 @@
 .upload-container {
     background: var(--bg-card);
-    border: 2px dashed var(--border);
+    border: 2px dashed var(--border-strong);
     border-radius: 12px;
     padding: 3rem 2rem;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--transition-base);
     position: relative;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .upload-container:hover {
     border-color: var(--primary);
-    background: rgba(99, 102, 241, 0.05);
+    background: var(--primary-subtle);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .upload-container.dragging {
     border-color: var(--primary);
-    background: rgba(99, 102, 241, 0.1);
+    background: var(--primary-subtle);
     transform: scale(1.02);
+    box-shadow: var(--shadow-lg);
 }
 
 .upload-icon {
@@ -26,12 +29,18 @@
     margin-bottom: 1rem;
     display: flex;
     justify-content: center;
+    transition: transform var(--transition-base);
+}
+
+.upload-container:hover .upload-icon {
+    transform: translateY(-4px);
 }
 
 .upload-container h3 {
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
     color: var(--text-primary);
+    font-weight: 600;
 }
 
 .upload-container p {
@@ -41,8 +50,7 @@
 
 .file-types {
     font-size: 0.85rem;
-    color: var(--text-secondary);
-    opacity: 0.7;
+    color: var(--text-tertiary);
 }
 
 .file-input {
