@@ -9,7 +9,7 @@ import { CONFIG } from '../../utils/constants';
  * Initialize Groq client
  */
 const groq = new Groq({
-    apiKey: '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',
+    apiKey: import.meta.env.VITE_GROQ_API_KEY,
     dangerouslyAllowBrowser: true
 });
 
